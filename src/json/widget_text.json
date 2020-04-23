@@ -1,0 +1,7 @@
+{
+  "widget" : {
+    "acf_fc_layout": "text",
+    "text": "<p>Ceci est un texte</p>",
+    "widget_style": "background_secondary dark"
+  }
+}
