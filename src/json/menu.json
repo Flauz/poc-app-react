@@ -1,0 +1,29 @@
+{
+  "header" : [{
+    "page_template": "homepage",
+    "url": "https://club-sandbox-local.leoo-factory.io/",
+    "url_slug": "homepage"
+  },{
+    "page_template": "catalog",
+    "url": "https://club-sandbox-local.leoo-factory.io/boutique",
+    "url_slug": "catalog"
+  },{
+    "page_template": "faq",
+    "url": "https://club-sandbox-local.leoo-factory.io/faq",
+    "url_slug": "faq"
+  }],
+  "footer": [{
+    "page_template": "homepage",
+    "url": "https://club-sandbox-local.leoo-factory.io/",
+    "url_slug": "homepage"
+  },{
+    "page_template": "catalog",
+    "url": "https://club-sandbox-local.leoo-factory.io/boutique",
+    "url_slug": "catalog"
+  },{
+    "page_template": "faq",
+    "url": "https://club-sandbox-local.leoo-factory.io/faq",
+    "url_slug": "faq"
+  }]
+}
+

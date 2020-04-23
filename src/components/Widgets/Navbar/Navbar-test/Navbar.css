@@ -1,0 +1,38 @@
+.navigation{
+    list-style-type: none;
+    display: flex;
+}
+
+nav{
+    justify-content: center;
+
+}
+
+
+ul{
+    /* display: flex; */
+    justify-content: space-around;
+}
+
+li{
+    margin: 10px;
+    font-family: 'Roboto';
+    font-size: 1.5em;
+    text-decoration: none;
+}
+
+
+
+.navlink{
+    text-decoration: none;
+    color: black;
+}
+
+.navlink:hover{
+    text-decoration: underline;
+    color: black;
+}
+
+.navlink:active{
+    color: grey;
+}
