@@ -3,5 +3,6 @@ body {
   padding: 0;
   overflow-y: scroll;
   overflow: none;
+  background-color: white;
 }
 
