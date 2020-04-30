@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios"
 import { connect } from "react-redux"
 import { Switch, Route, withRouter } from 'react-router-dom'
@@ -10,57 +10,56 @@ import './App.css';
 var routes = null
 
 
-class App extends React.Component {
+const App = () => {
 
-  state = {
-    config: [],
-    isLoaded: false
-  }
+  const [config, setConfig] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
-  getData = () => {
-    axios.get("http://localhost:3030/config")
-      .then(result => { this.setState({ config: result.data, isLoaded: true }) })
-  }
+  useEffect(() => {
+    const getData = async () => {
+      const result = await axios.get("http://localhost:3030/config")
+      await setConfig(result.data)
+      await setIsLoaded(true)
+    }
+    getData()
+  }, [])
 
-  dataToStore = () => {
-    const action = { type: 'CONFIG_LOADED', value: this.state }
+
+  const dataToStore = () => {
+    const action = { type: 'CONFIG_LOADED', value: config,isLoaded }
     this.props.dispatch(action)
   }
 
-  componentDidMount() {
-    this.getData()
-  }
 
-  render() {
 
-    this.dataToStore()
+  dataToStore()
 
-    routes = this.props.routes.pages.pages
+  routes = this.props.routes.pages.pages
 
-    return (
-      <div className="app">
-        {!this.props.config.isLoaded ? (<div>Loading...</div>) :
-          <div className="App">
+  return (
+    <div className="app">
+      {!this.props.config.isLoaded ? (<div>Loading...</div>) :
+        <div className="App">
 
-            <CallApi/>
+          <CallApi />
 
-            {!this.props.routes.isLoaded ? "loading..." :
-              <Switch>
-                {console.log('LES ROUTES C ICI :', routes[0])}
-                <Route exact path="/" component={() => <View json_path={routes[0].json_page_path}/>} />
-                {routes &&
-                  routes.map((route, index) => {
-                    console.log("ICI BATARD :",route.url, route.component,route.title, route.json_page_path, index)
-                    return <Route exact key={index} path={route.url} component={() => <View title={route.title} json_path={route.json_page_path} />} />
-                  })}
-              </Switch>
-            }
-          </div>
-        }
-      </div>
-    );
-  }
+          {!this.props.routes.isLoaded ? "loading..." :
+            <Switch>
+              {console.log('LES ROUTES C ICI :', routes[0])}
+              <Route exact path="/" component={() => <View json_path={routes[0].json_page_path} />} />
+              {routes &&
+                routes.map((route, index) => {
+                  console.log("ICI BATARD :", route.url, route.component, route.title, route.json_page_path, index)
+                  return <Route exact key={index} path={route.url} component={() => <View title={route.title} json_path={route.json_page_path} />} />
+                })}
+            </Switch>
+          }
+        </div>
+      }
+    </div>
+  );
 }
+
 
 const mapStateToProps = state => {
   return {
