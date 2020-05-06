@@ -6,27 +6,25 @@ import "./Navbar.css"
 
 var menu = null
 
-class Navbar extends React.Component {
+const Navbar = () => {
 
-    render() {
-
-        return (
-            <>
-                {!this.props.menu.isLoaded ? (<div>Loading</div>) :
-                    menu = this.props.menu.pages.menu.header,
-                    <nav className="navbar-light bg-light" >
-                        <ul className="nav">
-                            {menu &&
-                                menu.map((item, index) => {
-                                    return <li key={index}><NavLink activeClassName="nav-item" className="navlink" to={item.url}>{item.item}</NavLink></li>
-                                })}
-                        </ul>
-                    </nav>
-                }
-            </>
-        )
-    }
+    return (
+        <>
+            {!this.props.menu.isLoaded ? (<div>Loading</div>) :
+                menu = this.props.menu.pages.menu.header,
+                <nav className="navbar-light bg-light" >
+                    <ul className="nav">
+                        {menu &&
+                            menu.map((item, index) => {
+                                return <li key={index}><NavLink activeClassName="nav-item" className="navlink" to={item.url}>{item.item}</NavLink></li>
+                            })}
+                    </ul>
+                </nav>
+            }
+        </>
+    )
 }
+
 
 const mapStateToProps = state => {
     return {

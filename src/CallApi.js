@@ -1,16 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from "react-router-dom"
 import axios from "axios"
 import { connect } from 'react-redux'
 
 
 
-class CallApi extends React.Component {
+const CallApi = () => {
 
-    state = {
-        pages: [],
-        isLoaded: false,
-    }
+    const [pages, setPages] = useState([])
+    const [isLoaded, setIsloaded] = useState(false)
 
     getPages = () => {
         axios.get(this.props.config)
@@ -18,20 +16,11 @@ class CallApi extends React.Component {
     }
 
     pagesToStore = () => {
-        const action = { type: 'PAGES_LOADED', value: this.state }
+        const action = { type: 'PAGES_LOADED', value: pages,isLoaded }
         this.props.dispatch(action)
     }
 
-    componentDidMount() {
-        this.getPages()
-    }
-
-    render() {
-
-        this.pagesToStore()
-
-        return null
-    }
+    this.pagesToStore()
 }
 
 const mapStateToProps = state => {
