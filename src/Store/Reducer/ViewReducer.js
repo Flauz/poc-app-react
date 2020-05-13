@@ -4,16 +4,15 @@ const initialState = {
 }
 
 function ViewReducer(state = initialState, action) {
-    let nextState
     switch (action.type) {
-        case 'VIEW_LOADED': 
-            state = action.value
-            nextState = state
-            return nextState || state
+        case 'VIEW_LOADED':
+            return {
+                ...state,
+                view: action.view,
+                isLoaded: true
+            }
         default: return state
-        
     }
-    
 }
 
 export default ViewReducer

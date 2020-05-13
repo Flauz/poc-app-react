@@ -1,17 +1,17 @@
 import React from 'react'
 import { NavLink, withRouter } from "react-router-dom"
 import axios from "axios"
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import "./Navbar.css"
-
-var menu = null
 
 const Navbar = () => {
 
+    const menus = useSelector(state => state.PagesReducer)
+    const menu = useSelector(state => state.PagesReducer.pages.menu.header)
+    
     return (
         <>
-            {!this.props.menu.isLoaded ? (<div>Loading</div>) :
-                menu = this.props.menu.pages.menu.header,
+            {!menus.isLoaded ? (<div>Loading</div>) :
                 <nav className="navbar-light bg-light" >
                     <ul className="nav">
                         {menu &&
@@ -25,12 +25,4 @@ const Navbar = () => {
     )
 }
 
-
-const mapStateToProps = state => {
-    return {
-        config: state.ConfigReducer.config.json_files.pages,
-        menu: state.PagesReducer
-    }
-}
-
-export default withRouter(connect(mapStateToProps)(Navbar))
+export default Navbar

@@ -1,34 +1,19 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import ReactHtmlParser from 'react-html-parser';
 
+const Widget_text = ({ state }) => {
 
-class Widget_text extends React.Component {
+    const widget = state
+    const dataWidgetText = widget.text
+    const dataWidgetStyle = widget.widget_style
 
-
-    widget = this.props.state
-
-    dataWidgetText = this.widget.text
-    dataWidgetStyle = this.widget.widget_style
-
-    
-
-    render() {
-        console.log('WIDGET', this.dataWidgetStyle)
-        return (
-            <div className='container'>
-                <div className="container clearfix">
-                <div className={this.dataWidgetStyle}>{ReactHtmlParser(this.dataWidgetText)}</div> 
-                </div>
+    return (
+        <div className='container'>
+            <div className="container clearfix">
+                <div className={dataWidgetStyle}>{ReactHtmlParser(dataWidgetText)}</div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-const mapStateToProps = state => {
-    return {
-        stateRedux : state 
-    }
-}
-
-export default connect(mapStateToProps)(Widget_text)
+export default Widget_text

@@ -1,33 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { Switch, Route} from 'react-router-dom'
 import View from "./components/Views/View"
 import CallApi from "./CallApi"
 import './App.css';
-
-
-var routes = null
-
 
 const App = () => {
 
   const config = useSelector(state => state.ConfigReducer)
   const routes = useSelector(state => state.PagesReducer)
+  const root = useSelector(state => state.PagesReducer.pages.pages)
   const dispatch = useDispatch()
-
-  // const [config, setConfig] = useState([])
-  // const [isLoaded, setIsLoaded] = useState(false)
-
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const result = await axios.get("http://localhost:3030/config")
-  //     await setConfig(result.data)
-  //     await setIsLoaded(true)
-  //   }
-  //   getData()
-  // }, [])
-
 
   const getData = () => {
     return dispatch => {
@@ -35,7 +19,7 @@ const App = () => {
       .then(res => 
         dispatch({
           type: 'CONFIG_LOADED',
-          value: res.config
+          config: res.data
         }))
 
     }
@@ -45,22 +29,18 @@ const App = () => {
     dispatch(getData())
   }, [])
 
-  routes = this.props.routes.pages.pages
-
   return (
     <div className="app">
       {!config.isLoaded ? (<div>Loading...</div>) :
         <div className="App">
-
+          
           <CallApi />
 
-          {!this.props.routes.isLoaded ? "loading..." :
+          {!routes.isLoaded ? "loading..." :
             <Switch>
-              {console.log('LES ROUTES C ICI :', routes[0])}
-              <Route exact path="/" component={() => <View json_path={routes[0].json_page_path} />} />
-              {routes &&
-                routes.map((route, index) => {
-                  console.log("ICI BATARD :", route.url, route.component, route.title, route.json_page_path, index)
+              <Route exact path="/" component={() => <View title={root[0].title} json_path={root[0].json_page_path}/>} />
+              {root &&
+                root.map((route, index) => {
                   return <Route exact key={index} path={route.url} component={() => <View title={route.title} json_path={route.json_page_path} />} />
                 })}
             </Switch>
@@ -70,13 +50,5 @@ const App = () => {
     </div>
   );
 }
-
-
-// const mapStateToProps = state => {
-//   return {
-//     config: state.ConfigReducer,
-//     routes: state.PagesReducer
-//   }
-// }
 
 export default App;

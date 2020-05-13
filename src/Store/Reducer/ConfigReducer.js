@@ -3,9 +3,7 @@ const initialState = {
     isLoaded: false
 }
 
-
 function ConfigReducer(state = initialState, action) {
-    let nextState
     switch (action.type) {
         case 'CONFIG_LOADED': 
             return {
@@ -13,10 +11,8 @@ function ConfigReducer(state = initialState, action) {
                 config: action.config,
                 isLoaded: true
             }
-        default: return state
-        
+        default: return state 
     }
-    
 }
 
 export default ConfigReducer

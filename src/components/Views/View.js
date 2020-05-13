@@ -1,67 +1,54 @@
-import React from "react"
+import React, { useEffect } from "react"
 import axios from "axios"
-import { connect } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import Widget_heading from "../Widgets/Widget-heading/Widget_heading"
 import Widget_text from "../Widgets/Widget-text/Widget_text"
 import Header from "../Widgets/Header/Header"
 
-var widgets = null
+
+var widgetText = null
 var widgetHeading = null
 
-class View extends React.Component {
-    state = {
-        view: {},
-        isLoaded: false
+const View = ({ title, json_path }) => {
+
+    const menus = useSelector(state => state.PagesReducer)
+    const widgets = useSelector(state => state.ViewReducer)
+    const dispatch = useDispatch()
+
+    const getView = () => {
+        return dispatch => {
+            axios.get(json_path)
+                .then(res =>
+                    dispatch({
+                        type: 'VIEW_LOADED',
+                        view: res.data
+                    }))
+        }
     }
 
-    title = this.props.title
-    json_path = this.props.json_path
+    useEffect(() => {
+        dispatch(getView())
+    }, [])
 
-    getView = () => {
-        axios.get(this.json_path)
-            .then(result => { this.setState({ view: result.data, isLoaded: true }) })
-    }
+    return (
+        <>
+            {!widgets.isLoaded ? "" :
+                <div>
+                    {/* TODO */}
+                    {widgetText = widgets.view.widgets[2],
+                        widgetHeading = widgets.view.widgets[1], console.log()}
+                    <Header />
+                    {widgetHeading &&
+                        <Widget_heading state={widgetHeading} />}
+                    {widgetText &&
+                        <Widget_text state={widgetText} />}
+                    <h1>{title}</h1>
+                    <div>{json_path}</div>
 
-    viewToStore = () => {
-        const action = { type: 'VIEW_LOADED', value: this.state }
-        this.props.dispatch(action)
-    }
-
-    componentDidMount() {
-        this.getView()
-    }
-
-    render() {
-
-        this.viewToStore()
-
-        return (
-            <>
-                {!this.props.widgets.isLoaded ? "" :
-                    <div>
-                    {console.log('YEYEYE', this.props.widgets)}
-                        {widgets = this.props.widgets.view.widgets[2],
-                        widgetHeading = this.props.widgets.view.widgets[1],
-                        console.log("YAYAYAYAY: ", widgets)}
-                        <Header />
-                        {widgetHeading &&
-                        <Widget_heading state={widgetHeading}/>}
-                        {widgets &&
-                        <Widget_text state={widgets}/>}
-                        <h1>{this.title}</h1>
-                        <div>{this.json_path}</div>
-                    </div>
-                }
-            </>
-        )
-    }
+                </div>
+            }
+        </>
+    )
 }
 
-const mapStateToProps = state => {
-    return {
-        menu: state.PagesReducer,
-        widgets: state.ViewReducer
-    }
-}
-
-export default connect(mapStateToProps)(View)
+export default View
