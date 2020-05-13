@@ -1,33 +1,29 @@
 import React, { useState } from 'react'
 import { withRouter } from "react-router-dom"
 import axios from "axios"
-import { connect } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
 
 
 const CallApi = () => {
 
-    const [pages, setPages] = useState([])
-    const [isLoaded, setIsloaded] = useState(false)
+    const config = useSelector(state => state.ConfigReducer.config.json_files.pages)
+    const dispatch = useDispatch()
 
     getPages = () => {
-        axios.get(this.props.config)
-            .then(result => { this.setState({ pages: result.data, isLoaded: true }) })
+        return dispatch => {
+            axios.get(config)
+                .then(res =>
+                    dispatch({
+                        type: 'PAGES_LOADED',
+                        pages: res.pages
+                    })
+                )
+        }
     }
-
-    pagesToStore = () => {
-        const action = { type: 'PAGES_LOADED', value: pages,isLoaded }
-        this.props.dispatch(action)
-    }
-
-    this.pagesToStore()
+    
+    useEffect(() => {
+        dispatch(getPages())
+    }, [])
 }
 
-const mapStateToProps = state => {
-    return {
-        config: state.ConfigReducer.config.json_files.pages,
-        menu: state.PagesReducer
-    }
-}
-
-export default withRouter(connect(mapStateToProps)(CallApi))
+export default CallApi

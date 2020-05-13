@@ -5,13 +5,12 @@ const initialState = {
 
 
 function PagesReducer(state = initialState, action) {
-    let nextState
     switch (action.type) {
         case 'PAGES_LOADED': 
-            state = action.value
-            nextState = state
-            console.log('PAGES REDUCER', state)
-            return nextState || state
+            return {
+                ...state,
+                pages: action.pages
+            }
         default: return state
         
     }

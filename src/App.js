@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Switch, Route, withRouter } from 'react-router-dom'
 import View from "./components/Views/View"
 import CallApi from "./CallApi"
@@ -12,33 +12,44 @@ var routes = null
 
 const App = () => {
 
-  const [config, setConfig] = useState([])
-  const [isLoaded, setIsLoaded] = useState(false)
+  const config = useSelector(state => state.ConfigReducer)
+  const routes = useSelector(state => state.PagesReducer)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    const getData = async () => {
-      const result = await axios.get("http://localhost:3030/config")
-      await setConfig(result.data)
-      await setIsLoaded(true)
+  // const [config, setConfig] = useState([])
+  // const [isLoaded, setIsLoaded] = useState(false)
+
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const result = await axios.get("http://localhost:3030/config")
+  //     await setConfig(result.data)
+  //     await setIsLoaded(true)
+  //   }
+  //   getData()
+  // }, [])
+
+
+  const getData = () => {
+    return dispatch => {
+      axios.get("http://localhost:3030/config")
+      .then(res => 
+        dispatch({
+          type: 'CONFIG_LOADED',
+          value: res.config
+        }))
+
     }
-    getData()
-  }, [])
-
-
-  const dataToStore = () => {
-    const action = { type: 'CONFIG_LOADED', value: config,isLoaded }
-    this.props.dispatch(action)
   }
 
-
-
-  dataToStore()
+  useEffect(() => {
+    dispatch(getData())
+  }, [])
 
   routes = this.props.routes.pages.pages
 
   return (
     <div className="app">
-      {!this.props.config.isLoaded ? (<div>Loading...</div>) :
+      {!config.isLoaded ? (<div>Loading...</div>) :
         <div className="App">
 
           <CallApi />
@@ -61,11 +72,11 @@ const App = () => {
 }
 
 
-const mapStateToProps = state => {
-  return {
-    config: state.ConfigReducer,
-    routes: state.PagesReducer
-  }
-}
+// const mapStateToProps = state => {
+//   return {
+//     config: state.ConfigReducer,
+//     routes: state.PagesReducer
+//   }
+// }
 
-export default withRouter(connect(mapStateToProps)(App));
+export default App;
